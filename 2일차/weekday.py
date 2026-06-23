@@ -63,6 +63,7 @@ def main() -> None:
     print("년, 월을 입력하면 해당 달의 달력을 보여드립니다.")
     year = int(input("년: "))
     month = int(input("월: "))
+    day = int(input("일: "))
     print_calendar(year, month)
 
 
