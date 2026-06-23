@@ -4,20 +4,66 @@ const form = document.getElementById("todo-form");
 const input = document.getElementById("todo-input");
 const list = document.getElementById("todo-list");
 const countEl = document.getElementById("todo-count");
+const dateEl = document.getElementById("today-date");
 
-let todos = loadTodos();
+let allTodos = loadAllTodos();
+let currentDateKey = getTodayKey();
+let todos = getTodosForDate(currentDateKey);
 
-function loadTodos() {
+function getTodayKey() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function formatDate(dateKey) {
+  const [year, month, day] = dateKey.split("-");
+  return `${year}년 ${Number(month)}월 ${Number(day)}일`;
+}
+
+function updateTodayDate() {
+  const todayKey = getTodayKey();
+
+  if (todayKey !== currentDateKey) {
+    saveTodos();
+    currentDateKey = todayKey;
+    todos = getTodosForDate(currentDateKey);
+  }
+
+  dateEl.textContent = formatDate(currentDateKey);
+}
+
+function loadAllTodos() {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
+    if (!data) return {};
+
+    const parsed = JSON.parse(data);
+
+    if (Array.isArray(parsed)) {
+      const migrated = { [getTodayKey()]: parsed };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+      return migrated;
+    }
+
+    return parsed;
   } catch {
-    return [];
+    return {};
   }
 }
 
+function getTodosForDate(dateKey) {
+  if (!allTodos[dateKey]) {
+    allTodos[dateKey] = [];
+  }
+  return allTodos[dateKey];
+}
+
 function saveTodos() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+  allTodos[currentDateKey] = todos;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(allTodos));
 }
 
 function updateCount() {
@@ -33,6 +79,7 @@ function updateCount() {
 }
 
 function renderTodos() {
+  updateTodayDate();
   list.innerHTML = "";
 
   if (todos.length === 0) {
@@ -73,12 +120,15 @@ function renderTodos() {
 }
 
 function addTodo(text) {
+  updateTodayDate();
+
   const trimmed = text.trim();
   if (!trimmed) return;
 
   todos.push({
     id: crypto.randomUUID(),
     text: trimmed,
+    date: currentDateKey,
     done: false,
   });
 
@@ -97,6 +147,7 @@ function toggleTodo(id) {
 
 function deleteTodo(id) {
   todos = todos.filter((item) => item.id !== id);
+  allTodos[currentDateKey] = todos;
   saveTodos();
   renderTodos();
 }
@@ -107,5 +158,13 @@ form.addEventListener("submit", (event) => {
   input.value = "";
   input.focus();
 });
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    renderTodos();
+  }
+});
+
+setInterval(updateTodayDate, 60000);
 
 renderTodos();
