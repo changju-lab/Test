@@ -1,0 +1,10 @@
+# Environment variables
+.env
+.env.*
+.env.local
+.env.*.local
+.envrc
+
+# Large model/data files (exceed GitHub 100MB limit)
+6일차/Dataset/weight_final.pt
+7일차/Dataset/cwru/*.npy

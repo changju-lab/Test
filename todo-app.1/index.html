@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>매일 할 일</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>매일 할 일</h1>
+      <p class="date-display" id="date-display"></p>
+      <p class="subtitle">오늘 해야 할 일을 기록하세요</p>
+    </header>
+
+    <form class="input-form" id="todo-form">
+      <input
+        type="text"
+        id="todo-input"
+        placeholder="할 일을 입력하세요"
+        autocomplete="off"
+        maxlength="200"
+      >
+      <button type="submit" id="add-btn">추가</button>
+    </form>
+
+    <p class="count" id="todo-count"></p>
+
+    <ul class="todo-list" id="todo-list"></ul>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
