@@ -1,9 +1,25 @@
 # Environment variables
 .env
 .env.*
-.env.local
-.env.*.local
-.envrc
+!.env.example
+!.env.sample
+!.env.template
+*.env
+
+*.zip
+*.db
+*.pdf
+*/chroma_regulations/*
+*/chroma_store/*
+
+*/__pycache__/*
+
+*/data/*
+
+*.csv
+*/models/*
+
+*/16.3 slack API 활용하기.ipynb
 
 # Large model/data files (exceed GitHub 100MB limit)
 6일차/Dataset/weight_final.pt

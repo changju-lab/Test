@@ -1,0 +1,9 @@
+{
+  "python.defaultInterpreterPath": "C:\\Users\\Admin\\Miniconda3\\envs\\day15\\python.exe",
+  "python.condaPath": "C:\\Users\\Admin\\Miniconda3\\Scripts\\conda.exe",
+  "jupyter.kernels.excludePythonEnvironments": [
+    {
+      "path": "C:\\Users\\Admin\\Miniconda3\\envs\\day4\\python.exe"
+    }
+  ]
+}
